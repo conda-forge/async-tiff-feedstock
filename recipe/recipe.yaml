@@ -1,6 +1,6 @@
 context:
   name: async-tiff
-  version: "0.7.1"
+  version: "0.7.2"
   python_min: "3.11"
 
 package:
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/async_tiff-${{ version }}.tar.gz
-  sha256: dbef87b2696bea06161c5fd0d9546700b8a30c04d3033c9b68b4b162c4cfa2dc
+  sha256: b2eb1f2671de4e331d1eaef1fd5bb3670e1f26ec7465115be488e60349f2dbce
 
 build:
   number: 0
@@ -48,14 +48,10 @@ tests:
       pip_check: true
       python_version: ["${{ python_min ~ '.*' }}"]
   - script:
-      # NOTE: we must manually set SP_DIR since it is not set.
-      # Can be removed once https://github.com/prefix-dev/rattler-build/issues/1733 is fixed.
       - if: unix and is_abi3
-        then:
-          - abi3audit $SP_DIR/async_tiff/_async_tiff.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
+        then: abi3audit $SP_DIR/async_tiff/_async_tiff.abi3.so -s -v --assume-minimum-abi3 ${{ python_min }}
       - if: win and is_abi3
-        then:
-          - abi3audit %SP_DIR%\\async_tiff\\_async_tiff.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
+        then: abi3audit %SP_DIR%\\async_tiff\\_async_tiff.pyd -s -v --assume-minimum-abi3 ${{ python_min }}
     requirements:
       run:
         - abi3audit
